@@ -39,7 +39,7 @@ def call(Map pipelineParameters) {
                 }
             }
 
-            stage('Get user name') {
+            stage('Get docker username') {
                 when {
                     expression {
                         return (isUserChange == true)
@@ -98,16 +98,18 @@ def call(Map pipelineParameters) {
                 }
             }
 
-            stage('Push image to Docker Hub and delete local image') {
+            stage('Push image to Docker Hub') {
                 steps {
                     sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
-                    sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
                 }
             }
 
             stage('Compose image with volumes') {
                 steps {
-                    sh "sudo docker-compose up -d"
+                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', passwordVariable: 'password')]) {
+                        sh "sudo docker login --username ${DOCKERUSER} --password $password"
+                        sh "sudo docker-compose up -d"
+                    }
                 }
             }
 
@@ -128,6 +130,7 @@ def call(Map pipelineParameters) {
             always {
                 echo 'Pipeline finished'
                 cleanWs()
+                sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
             }
             success {
                 echo 'Build Successful'
