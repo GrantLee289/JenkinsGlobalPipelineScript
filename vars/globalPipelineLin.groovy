@@ -100,7 +100,7 @@ def call(Map pipelineParameters) {
             stage('Push image to Docker Hub') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
-                        sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
+                        sh "docker push ${DOCKERUSER}/${PROJECT_NAME}-service"
                     }
                 }
             }
