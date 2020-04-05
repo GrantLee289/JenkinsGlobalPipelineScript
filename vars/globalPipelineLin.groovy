@@ -25,6 +25,7 @@ def call(Map pipelineParameters) {
                             BRANCH = pipelineParameters.branch
                             PROJECT_NAME = pipelineParameters.projectName
                             PERSISTENCE = pipelineParameters.persistDir
+                            DOCKERUSER = ""
                         }
                     }
                 }
@@ -47,6 +48,7 @@ def call(Map pipelineParameters) {
                 steps {
                     script {
                         def INPUT_PARAMS = input message: "Who are you?", ok: "Lets go!", parameters: [string(name: 'NAME', description: "Tell me your name...")]
+                        DOCKERUSER = userInput.NAME
                     }
                 }
             }
@@ -92,15 +94,26 @@ def call(Map pipelineParameters) {
 
             stage('Build docker image') {
                 steps {
-                    sh "sudo docker build . --tag ${PROJECT_NAME}"
+                    sh "sudo docker build . --tag ${DOCKERUSER}/${PROJECT_NAME}"
                 }
             }
 
-            stage('Run container') {
+            stage('Push image to Docker Hub and delete local image') {
                 steps {
-                    sh "sudo docker run -d --name ${PROJECT_NAME}-app -v ${PERSISTENCE}/${PROJECT_NAME}/logs:/logs -v ${PERSISTENCE}/${PROJECT_NAME}/from:/from -v ${PERSISTENCE}/${PROJECT_NAME}/to:/to -it ${PROJECT_NAME}"
+                    sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
+                    sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
                 }
             }
+
+            stage('Compose image with volumes') {
+                sh "sudo docker-compose up -d"
+            }
+
+//            stage('Run container') {
+//                steps {
+//                    sh "sudo docker run -d --name ${PROJECT_NAME}-app -v ${PERSISTENCE}/${PROJECT_NAME}/logs:/logs -v ${PERSISTENCE}/${PROJECT_NAME}/from:/from -v ${PERSISTENCE}/${PROJECT_NAME}/to:/to -it ${DOCKERUSER}/${PROJECT_NAME}"
+//                }
+//            }
 
             stage('Clean workspace') {
                 steps {
