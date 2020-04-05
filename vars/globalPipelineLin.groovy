@@ -117,16 +117,17 @@ def call(Map pipelineParameters) {
 //                }
 //            }
 
-            stage('Clean workspace') {
-                steps {
-                    cleanWs()
-                }
-            }
+//            stage('Clean workspace') {
+//                steps {
+//                    cleanWs()
+//                }
+//            }
         }
 
         post {
             always {
                 echo 'Pipeline finished'
+                cleanWs()
             }
             success {
                 echo 'Build Successful'
