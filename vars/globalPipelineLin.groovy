@@ -103,28 +103,18 @@ def call(Map pipelineParameters) {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
                         sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
                     }
-//                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', usernameVariable: 'user', passwordVariable: 'password')]) {
-//                        sh 'sudo docker login --username $user --password-stdin $password'
-//                        sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
-//                    }
                 }
             }
 
             stage('Compose image with volumes') {
                 steps {
-                    sh "sudo docker-compose up -d"
+                    sh "sudo docker-compose up -d ${DOCKERUSER}/${PROJECT_NAME}-service"
                 }
             }
 
 //            stage('Run container') {
 //                steps {
 //                    sh "sudo docker run -d --name ${PROJECT_NAME}-app -v ${PERSISTENCE}/${PROJECT_NAME}/logs:/logs -v ${PERSISTENCE}/${PROJECT_NAME}/from:/from -v ${PERSISTENCE}/${PROJECT_NAME}/to:/to -it ${DOCKERUSER}/${PROJECT_NAME}"
-//                }
-//            }
-
-//            stage('Clean workspace') {
-//                steps {
-//                    cleanWs()
 //                }
 //            }
         }
