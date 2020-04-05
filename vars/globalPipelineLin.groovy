@@ -25,7 +25,7 @@ def call(Map pipelineParameters) {
                             BRANCH = pipelineParameters.branch
                             PROJECT_NAME = pipelineParameters.projectName
                             PERSISTENCE = pipelineParameters.persistDir
-                            DOCKERUSER = ""
+                            DOCKERUSER = "grantlee289"
                         }
                     }
                 }
