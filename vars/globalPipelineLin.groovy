@@ -107,7 +107,7 @@ def call(Map pipelineParameters) {
 
             stage('Compose image with volumes') {
                 steps {
-                    sh "sudo docker-compose up -d ${DOCKERUSER}/${PROJECT_NAME}"
+                    sh "sudo docker-compose up -d"
                 }
             }
 
