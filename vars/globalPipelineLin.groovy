@@ -100,14 +100,14 @@ def call(Map pipelineParameters) {
             stage('Push image to Docker Hub') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
-                        sh "docker push ${DOCKERUSER}/${PROJECT_NAME}-service"
+                        sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
                     }
                 }
             }
 
             stage('Compose image with volumes') {
                 steps {
-                    sh "sudo docker-compose up -d ${DOCKERUSER}/${PROJECT_NAME}-service"
+                    sh "sudo docker-compose up -d ${DOCKERUSER}/${PROJECT_NAME}"
                 }
             }
 
