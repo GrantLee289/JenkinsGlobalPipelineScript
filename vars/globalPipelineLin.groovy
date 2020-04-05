@@ -100,19 +100,19 @@ def call(Map pipelineParameters) {
 
             stage('Push image to Docker Hub') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', usernameVariable: 'user', passwordVariable: 'password')]) {
-                        sh 'sudo docker login --username $user --password-stdin $password'
+                    withDockerRegistry([credentialsId: 'dockerCreds']) {
                         sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
                     }
+//                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', usernameVariable: 'user', passwordVariable: 'password')]) {
+//                        sh 'sudo docker login --username $user --password-stdin $password'
+//                        sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
+//                    }
                 }
             }
 
             stage('Compose image with volumes') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', usernameVariable: 'user', passwordVariable: 'password')]) {
-                        sh 'sudo docker login --username $user --password-stdin $password'
-                        sh "sudo docker-compose up -d"
-                    }
+                    sh "sudo docker-compose up -d"
                 }
             }
 
