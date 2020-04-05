@@ -39,7 +39,7 @@ def call(Map pipelineParameters) {
                 }
             }
 
-            stage('Get docker username') {
+            stage('Get user name') {
                 when {
                     expression {
                         return (isUserChange == true)
@@ -48,7 +48,6 @@ def call(Map pipelineParameters) {
                 steps {
                     script {
                         def INPUT_PARAMS = input message: "Who are you?", ok: "Lets go!", parameters: [string(name: 'NAME', description: "Tell me your name...")]
-                        DOCKERUSER = userInput.NAME
                     }
                 }
             }
