@@ -84,13 +84,6 @@ def call(Map pipelineParameters) {
                 }
             }
 
-//            stage('Create persistence directories') {
-//                steps {
-//                    sh "test -d ${PERSISTENCE} && echo '${PERSISTENCE} exists' || sudo mkdir ${PERSISTENCE}"
-//                    sh "test -d ${PERSISTENCE}/${PROJECT_NAME} && echo '${PERSISTENCE}/${PROJECT_NAME} exists' || sudo mkdir ${PERSISTENCE}/${PROJECT_NAME} ${PERSISTENCE}/${PROJECT_NAME}/logs ${PERSISTENCE}/${PROJECT_NAME}/from  ${PERSISTENCE}/${PROJECT_NAME}/to"
-//                }
-//            }
-
             stage('Build docker image') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
@@ -114,12 +107,6 @@ def call(Map pipelineParameters) {
                     sh "sudo docker-compose up -d"
                 }
             }
-
-//            stage('Run container') {
-//                steps {
-//                    sh "sudo docker run -d --name ${PROJECT_NAME}-app -v ${PERSISTENCE}/${PROJECT_NAME}/logs:/logs -v ${PERSISTENCE}/${PROJECT_NAME}/from:/from -v ${PERSISTENCE}/${PROJECT_NAME}/to:/to -it ${DOCKERUSER}/${PROJECT_NAME}"
-//                }
-//            }
         }
 
         post {
