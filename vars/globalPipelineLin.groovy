@@ -100,6 +100,7 @@ def call(Map pipelineParameters) {
             stage('Push image to Docker Hub then delete it locally') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
+                        sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME} && echo 'Removed existing image' || echo 'Image does not exist...'"
                         sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
                         sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
                     }
