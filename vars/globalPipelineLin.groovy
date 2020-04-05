@@ -101,7 +101,7 @@ def call(Map pipelineParameters) {
             stage('Push image to Docker Hub') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
-                        sh "sudo docker push ${DOCKERUSER}/${PROJECT_NAME}"
+                        sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
                     }
 //                    withCredentials([usernamePassword(credentialsId: 'dockerCreds', usernameVariable: 'user', passwordVariable: 'password')]) {
 //                        sh 'sudo docker login --username $user --password-stdin $password'
