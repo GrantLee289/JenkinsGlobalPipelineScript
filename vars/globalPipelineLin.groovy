@@ -85,12 +85,12 @@ def call(Map pipelineParameters) {
                 }
             }
 
-            stage('Create persistence directories') {
-                steps {
-                    sh "test -d ${PERSISTENCE} && echo '${PERSISTENCE} exists' || sudo mkdir ${PERSISTENCE}"
-                    sh "test -d ${PERSISTENCE}/${PROJECT_NAME} && echo '${PERSISTENCE}/${PROJECT_NAME} exists' || sudo mkdir ${PERSISTENCE}/${PROJECT_NAME} ${PERSISTENCE}/${PROJECT_NAME}/logs ${PERSISTENCE}/${PROJECT_NAME}/from  ${PERSISTENCE}/${PROJECT_NAME}/to"
-                }
-            }
+//            stage('Create persistence directories') {
+//                steps {
+//                    sh "test -d ${PERSISTENCE} && echo '${PERSISTENCE} exists' || sudo mkdir ${PERSISTENCE}"
+//                    sh "test -d ${PERSISTENCE}/${PROJECT_NAME} && echo '${PERSISTENCE}/${PROJECT_NAME} exists' || sudo mkdir ${PERSISTENCE}/${PROJECT_NAME} ${PERSISTENCE}/${PROJECT_NAME}/logs ${PERSISTENCE}/${PROJECT_NAME}/from  ${PERSISTENCE}/${PROJECT_NAME}/to"
+//                }
+//            }
 
             stage('Build docker image') {
                 steps {
@@ -106,7 +106,9 @@ def call(Map pipelineParameters) {
             }
 
             stage('Compose image with volumes') {
-                sh "sudo docker-compose up -d"
+                steps {
+                    sh "sudo docker-compose up -d"
+                }
             }
 
 //            stage('Run container') {
