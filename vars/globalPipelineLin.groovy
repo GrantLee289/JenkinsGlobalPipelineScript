@@ -24,8 +24,7 @@ def call(Map pipelineParameters) {
                             REPO = pipelineParameters.scmUrl
                             BRANCH = pipelineParameters.branch
                             PROJECT_NAME = pipelineParameters.projectName
-                            PERSISTENCE = pipelineParameters.persistDir
-                            DOCKERUSER = "grantlee289"
+                            DOCKERUSER = pipelineParameters.dockerUser
                         }
                     }
                 }
@@ -60,7 +59,7 @@ def call(Map pipelineParameters) {
                 }
                 steps {
                     script {
-                        def INPUT_PARAMS = input message: "Pulling branch ${BRANCH} \n from repository ${REPO} \n for project ${PROJECT_NAME} \n with volumes at ${PERSISTENCE}", ok: "Start the build now!"
+                        def INPUT_PARAMS = input message: "Pulling branch ${BRANCH} \n from repository ${REPO} \n for project ${PROJECT_NAME}", ok: "Start the build now!"
                     }
                 }
             }
