@@ -87,7 +87,6 @@ def call(Map pipelineParameters) {
             stage('Build docker image') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
-                        sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME} && echo 'Removed existing image' || echo 'Image does not exist...'"
                         sh "sudo docker build . --tag ${DOCKERUSER}/${PROJECT_NAME}"
                     }
                 }
@@ -113,6 +112,7 @@ def call(Map pipelineParameters) {
             always {
                 echo 'Pipeline finished'
                 cleanWs()
+                sh "sudo docker image prune"
             }
             success {
                 echo 'Build Successful'
