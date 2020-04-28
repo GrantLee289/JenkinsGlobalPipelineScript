@@ -86,7 +86,7 @@ def call(Map pipelineParameters) {
             stage('Build docker image') {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
-                        sh "sudo docker build . --tag ${DOCKERUSER}/${PROJECT_NAME}"
+                        sh "docker build . --tag ${DOCKERUSER}/${PROJECT_NAME}"
                     }
                 }
             }
@@ -95,14 +95,14 @@ def call(Map pipelineParameters) {
                 steps {
                     withDockerRegistry([credentialsId: 'dockerCreds', url: ""]) {
                         sh "docker push ${DOCKERUSER}/${PROJECT_NAME}"
-                        sh "sudo docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
+                        sh "docker image rm ${DOCKERUSER}/${PROJECT_NAME}"
                     }
                 }
             }
 
             stage('Compose image with volumes') {
                 steps {
-                    sh "sudo docker-compose up -d"
+                    sh "docker-compose up -d"
                 }
             }
         }
