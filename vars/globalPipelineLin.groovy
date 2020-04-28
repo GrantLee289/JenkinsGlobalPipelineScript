@@ -111,7 +111,7 @@ def call(Map pipelineParameters) {
             always {
                 echo 'Pipeline finished'
                 cleanWs()
-                sh "sudo docker image prune -f"
+                sh "docker image prune -f"
             }
             success {
                 echo 'Build Successful'
