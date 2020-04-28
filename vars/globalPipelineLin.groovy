@@ -4,7 +4,7 @@ def call(Map pipelineParameters) {
         agent any
 
         tools {
-            maven 'MAVEN-3.6.3'
+            maven 'MAVEN-3.6.0'
         }
 
         options {
