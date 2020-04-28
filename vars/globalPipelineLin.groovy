@@ -73,7 +73,7 @@ def call(Map pipelineParameters) {
 
             stage('Install the application') {
                 steps {
-                    sh "mvn -X clean install"
+                    sh "mvn clean install"
                 }
             }
 
